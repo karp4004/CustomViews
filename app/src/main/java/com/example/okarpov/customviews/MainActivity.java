@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         a.notifyDataSetChanged();
 
-        listView.setMargins(300, 400, 2);
+        listView.setMargins(300, 600, 4);
 
 //        CountDownTimer routeFinishTimer = new CountDownTimer(100, 100) {
 //
