@@ -53,7 +53,7 @@ public class CustomAdapter extends BaseAdapter {
         // TODO Auto-generated method stub
         View vi = convertView;
         if (vi == null)
-            vi = inflateView();
+            vi = inflater.inflate(R.layout.customlist_item, parent, false);
 
         return vi;
     }

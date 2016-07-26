@@ -12,8 +12,13 @@
         android:id="@+id/textView2"
         android:layout_centerHorizontal="true" />
 
-    <com.example.okarpov.customviews.CustomList
+    <include
         android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item"
+        layout="@layout/customlist_header" />
+
+    <com.example.okarpov.customviews.CustomList
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/cList"
         android:layout_alignParentTop="true" />
@@ -26,4 +31,22 @@
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
         android:background="@android:drawable/stat_sys_phone_call_forward" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.example.okarpov.customviews.CustomList2
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/clist2" />
+        </RelativeLayout>
+    </ScrollView>
+
 </RelativeLayout>

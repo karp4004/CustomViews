@@ -7,17 +7,15 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 /**
  * Created by okarpov on 7/25/2016.
  */
-public class CustomList extends ListView implements
+public class CustomList2 extends LinearLayout implements
         GestureDetector.OnGestureListener {
 
     public interface Interface
@@ -33,11 +31,8 @@ public class CustomList extends ListView implements
     private GestureDetectorCompat mDetector;
     Interface mInterface;
     View mHeader;
-    int mItemHeight;
 
-    @Override
     public void addHeaderView(View v) {
-        Log.i("CustomList", "addHeaderView");
         mHeader = v;
     }
 
@@ -45,19 +40,19 @@ public class CustomList extends ListView implements
         mInterface = i;
     }
 
-    public CustomList(Context context)
+    public CustomList2(Context context)
     {
         super(context);
         init(context);
     }
 
-    public CustomList(Context context, AttributeSet attrs)
+    public CustomList2(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         init(context);
     }
 
-    public CustomList(Context context, AttributeSet attrs, int defStyleAttr)
+    public CustomList2(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
         init(context);
@@ -65,7 +60,6 @@ public class CustomList extends ListView implements
 
     public void init(Context context)
     {
-        mItemHeight = (int)context.getResources().getDimension(R.dimen.list_item);
         mDetector = new GestureDetectorCompat(context,this);
     }
 
@@ -99,10 +93,9 @@ public class CustomList extends ListView implements
 
         setLayoutParams(params);
 
-        RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams)mHeader.getLayoutParams();
-        p.topMargin = params.topMargin - mItemHeight;
+        RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(getWidth(), getChildAt(0).getHeight());
+        p.topMargin = params.topMargin - getChildAt(0).getHeight();
         p.leftMargin = params.leftMargin;
-        p.rightMargin = params.rightMargin;
         mHeader.setLayoutParams(p);
 
         mInterface.onOverscroll();
@@ -169,10 +162,11 @@ public class CustomList extends ListView implements
 
                 setLayoutParams(params);
 
-                RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams)mHeader.getLayoutParams();
-                p.topMargin = params.topMargin - mItemHeight;
+                RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(getWidth(), getChildAt(0).getHeight());
+                p.topMargin = params.topMargin - getChildAt(0).getHeight();
                 p.leftMargin = params.leftMargin;
-                p.rightMargin = params.rightMargin;
+
+                if(mHeader != null)
                 mHeader.setLayoutParams(p);
             }
         };
@@ -205,6 +199,51 @@ public class CustomList extends ListView implements
         return true;
     }
 
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        this.mDetector.onTouchEvent(ev);
+
+        boolean can_scroll = true;
+
+        if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+            if (ev.getHistorySize() > 0) {
+                float hy = ev.getHistoricalY(0);
+                float y = ev.getY();
+                mDY = hy - y;
+
+                if (mDY > 0) {
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getLayoutParams();
+
+                    if (params.topMargin > marginMin) {
+                        params.topMargin -= mDY;
+                        can_scroll = false;
+                    }
+
+                    if (params.topMargin < marginMin) {
+                        params.topMargin = marginMin;
+                    }
+
+                    params.leftMargin = marginMax / marginSideCoeff - params.topMargin / marginSideCoeff;
+                    params.rightMargin = marginMax / marginSideCoeff - params.topMargin / marginSideCoeff;
+                    setLayoutParams(params);
+
+                    if(mHeader!=null) {
+                        RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(getWidth(), getChildAt(0).getHeight());
+                        p.topMargin = params.topMargin - getChildAt(0).getHeight();
+                        p.leftMargin = params.leftMargin;
+                        mHeader.setLayoutParams(p);
+                    }
+                }
+            }
+        }
+
+        if (can_scroll)
+        {
+            return super.onTouchEvent(ev);
+        }
+
+        return true;
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -235,12 +274,12 @@ public class CustomList extends ListView implements
                     params.rightMargin = marginMax / marginSideCoeff - params.topMargin / marginSideCoeff;
                     setLayoutParams(params);
 
-                    RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams)mHeader.getLayoutParams();
-                    p.topMargin = params.topMargin - mItemHeight;
-                    p.leftMargin = params.leftMargin;
-                    p.rightMargin = params.rightMargin;
-                    mHeader.setLayoutParams(p);
-
+                    if(mHeader != null) {
+                        RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(getWidth(), getChildAt(0).getHeight());
+                        p.topMargin = params.topMargin - getChildAt(0).getHeight();
+                        p.leftMargin = params.leftMargin;
+                        mHeader.setLayoutParams(p);
+                    }
                 }
             }
         }
@@ -264,29 +303,23 @@ public class CustomList extends ListView implements
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        int itemh = getHeight();
-        int cnt = getCount();
+        int c = getChildCount();
+        if(c != mCount)
+        {
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getLayoutParams();
+            params.topMargin = marginMax;
+            params.leftMargin = marginMax / marginSideCoeff - params.topMargin/marginSideCoeff;
+            params.rightMargin = marginMax / marginSideCoeff - params.topMargin/marginSideCoeff;
+            setLayoutParams(params);
 
-        Log.i("CustomList", "itemh:" + itemh + "cnt:" + cnt);
-
-        if(cnt > 0) {
-
-            int c = getCount();
-            if(c != mCount) {
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getLayoutParams();
-                params.topMargin = marginMax;
-                params.leftMargin = marginMax / marginSideCoeff - params.topMargin / marginSideCoeff;
-                params.rightMargin = marginMax / marginSideCoeff - params.topMargin / marginSideCoeff;
-                setLayoutParams(params);
-
-                RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams)mHeader.getLayoutParams();
-                p.topMargin = marginMax - mItemHeight;
+            if(mHeader != null) {
+                RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(getWidth(), getChildAt(0).getHeight());
+                p.topMargin = params.topMargin - getChildAt(0).getHeight();
+                p.leftMargin = params.leftMargin;
                 mHeader.setLayoutParams(p);
-
-                mCount = c;
             }
-        }
 
-        Log.i("CustomList", "itemh:" + itemh);
+            mCount = c;
+        }
     }
 }
