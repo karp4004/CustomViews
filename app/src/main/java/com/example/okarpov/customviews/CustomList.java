@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -23,6 +25,7 @@ public class CustomList extends ListView implements
     public interface Interface
     {
         void onOverscroll();
+        void onItemClick();
     }
 
     int marginMin;
@@ -67,6 +70,16 @@ public class CustomList extends ListView implements
     {
         mItemHeight = (int)context.getResources().getDimension(R.dimen.list_item);
         mDetector = new GestureDetectorCompat(context,this);
+
+        setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                Log.i("onItemClick", "position:" + position);
+            }
+        });
     }
 
     @Override

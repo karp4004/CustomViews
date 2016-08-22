@@ -5,48 +5,32 @@
     android:layout_height="match_parent"
     tools:context="com.example.okarpov.customviews.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:id="@+id/textView2"
-        android:layout_centerHorizontal="true" />
-
-    <include
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item"
-        layout="@layout/customlist_header" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/journeyFrame"
+        android:background="#e1e1e1">
 
-    <com.example.okarpov.customviews.CustomList
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/cList"
-        android:layout_alignParentTop="true" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/imageView"
-        android:src="@android:drawable/stat_sys_phone_call_forward"
-        android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true"
-        android:background="@android:drawable/stat_sys_phone_call_forward" />
-
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView" >
-
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.example.okarpov.customviews.CustomList2
-                android:layout_width="wrap_content"
+            <com.example.okarpov.customviews.CustomScrollView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/clist2" />
-        </RelativeLayout>
-    </ScrollView>
+                android:id="@+id/scrollView">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/journeyList"></LinearLayout>
+
+            </com.example.okarpov.customviews.CustomScrollView>
+
+        </FrameLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

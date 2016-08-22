@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/horizontalScrollView" >
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <include
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                layout="@layout/group_statistic_diagram_element"
+                android:layout_marginLeft="100dp" />
+
+            <include
+                layout="@layout/group_statistic_diagram_element"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="200dp" />
+
+            <include
+                layout="@layout/group_statistic_diagram_element"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="300dp" />
+
+            <include
+                layout="@layout/group_statistic_diagram_element"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="400dp" />
+
+            <include
+                layout="@layout/group_statistic_diagram_element"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="500dp" />
+
+            <include
+                layout="@layout/group_statistic_diagram_element"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+    </HorizontalScrollView>
+
+</LinearLayout>

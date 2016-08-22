@@ -9,88 +9,69 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
+
+    void testList()
+    {
+        setContentView(R.layout.activity_main);
+
+        ViewGroup journeyFrame = (ViewGroup)findViewById(R.id.journeyFrame);
+
+        LinearLayout listView = (LinearLayout)findViewById(R.id.journeyList);
+
+        CustomScrollView scrollView = (CustomScrollView)findViewById(R.id.scrollView);
+        scrollView.setMargins(0.f, 200, 0.95f, 1.0f);
+
+        scrollView.setInterface(new CustomScrollView.Interface(){
+            @Override
+            public void onOverscroll(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
+
+                Log.i("onOverscroll", "scrollX:" + scrollX + " scrollY:" + scrollY + " clampedX:" + clampedX + " clampedY:" + clampedY);
+            }
+
+            @Override
+            public void onSizeChanged(int w, int h, int oldw, int oldh) {
+                //View content_frame = findViewById(R.id.content_frame);
+                //journeyFrame.setLayoutParams(new LinearLayout.LayoutParams(content_frame.getWidth(), content_frame.getHeight()));
+            }
+
+            @Override
+            public void onTouchEvent(MotionEvent ev, float dy) {
+            }
+
+            @Override
+            public void onScrollEnd() {
+
+                Log.i("onScrollEnd", "onScrollEnd");
+
+                //animateCar();
+            }
+        });
+
+        scrollView.setAnimated(journeyFrame);
+
+        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        for(int i=0;i<20;i++) {
+            View v = inflater.inflate(R.layout.customlist_item, null);
+            listView.addView(v);
+        }
+    }
+
+    void testGroup()
+    {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        CustomAdapter a = new CustomAdapter(this);
-        final CustomList listView = (CustomList)findViewById(R.id.cList);
-        listView.setAdapter(a);
-
-        a.addItem("asdf");
-        a.addItem("fdfdfd");
-        a.addItem("asdfd");
-        a.addItem("dsasaa");
-        a.addItem("aaaaaa");
-        a.addItem("aaaaaa");
-        a.addItem("aaaaaa");
-        a.addItem("aaaaaa");
-        a.addItem("aaaaaa");
-        a.addItem("aaaaaa");
-        a.addItem("aaaaaa");
-        a.addItem("aaaaaa");
-        a.addItem("aaaaaa");
-        a.addItem("aaaaaa");
-        a.addItem("aaaaaa");
-        a.addItem("aaaaaa");
-        a.addItem("aaaaaa");
-
-        a.notifyDataSetChanged();
-
-        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View customHeader = findViewById(R.id.customHeader);
-
-        listView.addHeaderView(customHeader);
-
-        listView.setMargins(300, 600, 4);
-        listView.setInterface(new CustomList.Interface(){
-            @Override
-            public void onOverscroll() {
-                Log.i("CustomList.Interface", "onOverscroll");
-            }
-        });
-
-//        final CustomList2 listView2 = (CustomList2)findViewById(R.id.clist2);
-//        listView2.setMargins(300, 600, 4);
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView2.addView(inflater.inflate(R.layout.customlist_item, null));
-//        listView.addHeaderView(customHeader);
-
-//        CountDownTimer routeFinishTimer = new CountDownTimer(100, 100) {
-//
-//            public void onTick(long millisUntilFinished) {
-//            }
-//
-//            public void onFinish() {
-//                float x = listView.getX();
-//                listView.animate().x(x + 1);
-//
-//                start();
-//            }
-//        }.start();
+        setContentView(R.layout.group_statistic_diagram);
+        testList();
     }
 }
