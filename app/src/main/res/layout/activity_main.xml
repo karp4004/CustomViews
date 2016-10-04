@@ -33,4 +33,52 @@
 
     </LinearLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:layout_width="300dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center"
+            android:rotation="60"
+            android:visibility="gone">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#647eff"
+                android:layout_marginRight="280dp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="300dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center"
+            android:rotation="30"
+            android:visibility="gone">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#647eff"
+                android:layout_marginRight="280dp" />
+        </FrameLayout>
+
+        <include
+            android:layout_width="300dp"
+            android:layout_height="10dp"
+            layout="@layout/speed_item"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
+
+    <com.example.okarpov.customviews.SpeedView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/view">
+
+    </com.example.okarpov.customviews.SpeedView>>
+
 </RelativeLayout>
