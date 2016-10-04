@@ -3,6 +3,7 @@ package com.example.okarpov.customviews;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +12,14 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 /**
  * Created by karp4004 on 03.10.2016.
  */
 public class SpeedView extends FrameLayout {
+
+    int mValue = 0;
 
     public SpeedView(Context context)
     {
@@ -75,6 +79,29 @@ public class SpeedView extends FrameLayout {
 //                item.startAnimation(animation);
             }
 
+            int idx = indexOfChild(v);
+
+            View item_head = v.findViewById(R.id.item_head);
+            if (item_head != null) {
+
+                if(idx > 6 && (idx-2)%5==0)
+                {
+                    FrameLayout.LayoutParams par = new
+                            FrameLayout.LayoutParams((int)getResources().getDimension(R.dimen.size7),
+                            (int)getResources().getDimension(R.dimen.size5));
+                    par.gravity = Gravity.CENTER_VERTICAL;
+
+                    item_head.setLayoutParams(par);
+
+                    TextView txtVal = (TextView)v.findViewById(R.id.txtVal);
+                    if(txtVal != null)
+                    {
+                        txtVal.setText("" + idx);
+                        txtVal.setRotation(-item.getRotation());
+                    }
+                }
+            }
+
 //            RotateAnimation animation = new RotateAnimation(0, (float) Math.toRadians(i),
 //                    Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 //            animation.setInterpolator(new LinearInterpolator());
@@ -85,5 +112,40 @@ public class SpeedView extends FrameLayout {
 
             //v.setRotation(i);
         }
+    }
+
+    public void setValue(int v)
+    {
+        Log.i("setValue", "v:" + v);
+
+        if(mValue == v)
+            return;
+
+        if(mValue > v)
+        {
+            for(int i=mValue;i>=v;i--)
+            {
+                View ch = getChildAt(i);
+                if(ch != null) {
+                    View item_head = ch.findViewById(R.id.item_head);
+                    if (item_head != null) {
+                        item_head.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_selected));
+                    }
+                }
+            }
+        }
+        else {
+            for (int i = mValue; i < v; i++) {
+                View ch = getChildAt(i);
+                if(ch != null) {
+                    View item_head = ch.findViewById(R.id.item_head);
+                    if (item_head != null) {
+                        item_head.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_selected2));
+                    }
+                }
+            }
+        }
+
+        mValue = v;
     }
 }

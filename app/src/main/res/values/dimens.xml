@@ -7,5 +7,7 @@
     <dimen name="size3">300dp</dimen>
     <dimen name="size4">10dp</dimen>
     <dimen name="size5">4dp</dimen>
-    <dimen name="size6">280dp</dimen>
+    <dimen name="size6">10dp</dimen>
+    <dimen name="size7">15dp</dimen>
+    <dimen name="size8">4dp</dimen>
 </resources>

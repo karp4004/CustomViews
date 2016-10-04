@@ -2,6 +2,7 @@ package com.example.okarpov.customviews;
 
 import android.content.Context;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
 
 import java.util.Date;
+import java.util.concurrent.Delayed;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -65,13 +68,47 @@ public class MainActivity extends AppCompatActivity {
 
     void testGroup()
     {
+        setContentView(R.layout.group_statistic_diagram);
+    }
 
+    void testSpeed()
+    {
+        setContentView(R.layout.activity_main);
+
+        final SpeedView sv = (SpeedView)findViewById(R.id.speedView);
+        SeekBar sb = (SeekBar)findViewById(R.id.seekBar);
+        if(sb != null)
+        {
+            sb.setMax(sv.getChildCount());
+            sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
+
+                    Handler h = new Handler();
+                    h.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            sv.setValue(progress);
+                        }
+                    });
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.group_statistic_diagram);
-        testList();
+        testSpeed();
     }
 }

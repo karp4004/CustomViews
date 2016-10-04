@@ -6,10 +6,18 @@
     android:id="@+id/item">
 
     <FrameLayout
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/size6"
         android:layout_height="@dimen/size5"
         android:background="@drawable/btn_selected"
-        android:layout_marginRight="@dimen/size6"
-        android:layout_gravity="center_vertical" />
+        android:layout_gravity="center_vertical"
+        android:id="@+id/item_head" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtVal"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginLeft="@dimen/size7"
+        android:padding="@dimen/size8" />
 
 </FrameLayout>
