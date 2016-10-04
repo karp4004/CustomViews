@@ -53,7 +53,7 @@ public class SpeedView extends FrameLayout {
         float weight = range/100;
         DisplayMetrics metrics = getResources().getDisplayMetrics();
 
-        for(float i=30;i<range;i+=weight) {
+        for(float i=30 - (weight*2);i<(range+(weight*2));i+=weight) {
             View v = inflater.inflate(getResources().getLayout(R.layout.speed_item), null);
             addView(v);
 
@@ -84,7 +84,7 @@ public class SpeedView extends FrameLayout {
             View item_head = v.findViewById(R.id.item_head);
             if (item_head != null) {
 
-                if(idx > 6 && (idx-2)%5==0)
+                if((idx-2)%5==0)
                 {
                     FrameLayout.LayoutParams par = new
                             FrameLayout.LayoutParams((int)getResources().getDimension(R.dimen.size7),
@@ -96,7 +96,7 @@ public class SpeedView extends FrameLayout {
                     TextView txtVal = (TextView)v.findViewById(R.id.txtVal);
                     if(txtVal != null)
                     {
-                        txtVal.setText("" + idx);
+                        txtVal.setText("" + ((idx-2)*2+10));
                         txtVal.setRotation(-item.getRotation());
                     }
                 }
