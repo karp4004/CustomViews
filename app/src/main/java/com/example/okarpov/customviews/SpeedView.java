@@ -53,7 +53,10 @@ public class SpeedView extends FrameLayout {
             View v = inflater.inflate(getResources().getLayout(R.layout.speed_item), null);
             addView(v);
 
-            FrameLayout.LayoutParams p = new FrameLayout.LayoutParams(600, ViewGroup.LayoutParams.WRAP_CONTENT);
+            FrameLayout.LayoutParams p = new FrameLayout.LayoutParams(
+                    (int)getResources().getDimension(R.dimen.size3),
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+
             p.gravity = Gravity.CENTER;
 
             v.setLayoutParams(p);

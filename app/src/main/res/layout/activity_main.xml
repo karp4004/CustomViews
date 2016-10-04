@@ -75,9 +75,10 @@
     </FrameLayout>
 
     <com.example.okarpov.customviews.SpeedView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/view">
+        android:layout_width="@dimen/size3"
+        android:layout_height="@dimen/size3"
+        android:id="@+id/view"
+        android:layout_centerInParent="true">
 
     </com.example.okarpov.customviews.SpeedView>>
 
