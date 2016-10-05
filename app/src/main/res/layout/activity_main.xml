@@ -75,7 +75,7 @@
     </FrameLayout>
 
     <SeekBar
-        android:layout_width="@dimen/size3"
+        android:layout_width="@dimen/speed3"
         android:layout_height="wrap_content"
         android:id="@+id/seekBar"
         android:layout_centerHorizontal="true"
@@ -84,8 +84,8 @@
         android:max="100" />
 
     <com.example.okarpov.customviews.SpeedView
-        android:layout_width="@dimen/size3"
-        android:layout_height="@dimen/size3"
+        android:layout_width="@dimen/speed3"
+        android:layout_height="@dimen/speed3"
         android:id="@+id/speedView"
         android:layout_centerInParent="true">
 

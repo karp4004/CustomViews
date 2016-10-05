@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         SeekBar sb = (SeekBar)findViewById(R.id.seekBar);
         if(sb != null)
         {
-            sb.setMax(sv.getChildCount());
+            sb.setMax((int)sv.getMaxSpeed());
             sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {

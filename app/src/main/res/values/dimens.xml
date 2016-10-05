@@ -4,10 +4,10 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="list_item">100dp</dimen>
     <dimen name="size2">50dp</dimen>
-    <dimen name="size3">300dp</dimen>
-    <dimen name="size4">10dp</dimen>
-    <dimen name="size5">4dp</dimen>
-    <dimen name="size6">10dp</dimen>
-    <dimen name="size7">15dp</dimen>
-    <dimen name="size8">4dp</dimen>
+    <dimen name="speed3">300dp</dimen>
+    <dimen name="speed4">10dp</dimen>
+    <dimen name="speed5">4dp</dimen>
+    <dimen name="speed6">10dp</dimen>
+    <dimen name="speed7">15dp</dimen>
+    <dimen name="speed8">4dp</dimen>
 </resources>
