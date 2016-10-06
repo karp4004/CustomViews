@@ -10,4 +10,5 @@
     <dimen name="speed6">10dp</dimen>
     <dimen name="speed7">15dp</dimen>
     <dimen name="speed8">4dp</dimen>
+    <dimen name="speed9">20dp</dimen>
 </resources>

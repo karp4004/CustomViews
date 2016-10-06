@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtVal"
         android:layout_gravity="left|center_vertical"
-        android:layout_marginLeft="@dimen/speed7"
+        android:layout_marginLeft="@dimen/speed9"
         android:padding="@dimen/speed8" />
 
 </FrameLayout>
