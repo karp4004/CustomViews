@@ -1,6 +1,12 @@
 package com.example.okarpov.customviews;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RadialGradient;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -52,6 +58,10 @@ public class SpeedView extends FrameLayout {
 
     void init(Context context)
     {
+        this.setWillNotDraw(false);
+
+        mStrokeWidthArc = context.getResources().getDimension(R.dimen.speed5);
+
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         //5.1428571428571428571428571428571 - one
@@ -172,10 +182,93 @@ public class SpeedView extends FrameLayout {
         }
 
         mValue = speedItem;
+
+        invalidate();
+    }
+
+    protected final Paint mPaint = new Paint();
+    protected final RectF mArcRect = new RectF();
+    protected boolean rectSet = false;
+    protected float mStrokeWidthArc;
+
+    protected void onDrawSegment(Canvas canvas)
+    {
+        if (!rectSet) {
+            setArcRect();
+        }
+
+        mPaint.setShader(null);
+
+        if (40 >= 0) {
+//            mPaint.setColor(colorBg);
+//            mPaint.setStrokeWidth(mStrokeWidthBg);
+//            canvas.drawArc(mArcRect, 0, 360, false, mPaint);
+
+            int offset = 37;
+
+
+            mPaint.setStrokeWidth((int)(mStrokeWidthArc/2));
+
+            int degrees = (int)maxSpeed * (360 - offset*2) / (int)maxSpeed;
+            mPaint.setColor(Color.BLACK);
+            mPaint.setStyle(Paint.Style.STROKE);
+            canvas.drawArc(mArcRect, 90 + offset, degrees, false, mPaint);
+
+            degrees = (int)40 * (360 - offset*2) / (int)maxSpeed;
+            mPaint.setColor(Color.RED);
+            mPaint.setStyle(Paint.Style.STROKE);
+            canvas.drawArc(mArcRect, 90 + offset, degrees, false, mPaint);
+
+            double x = mArcRect.centerX() + Math.cos(Math.toRadians(degrees + (90 + offset)))*mArcRect.width()/2.f;
+            double y = mArcRect.centerY() + Math.sin(Math.toRadians(degrees + (90 + offset)))*mArcRect.height()/2.f;
+
+            Log.i("onDrawSegment", "x:" + x + " y:" + y);
+
+            mPaint.setColor(Color.BLACK);
+            mPaint.setStyle(Paint.Style.FILL);
+            canvas.drawCircle((int)x, (int)y, mStrokeWidthArc/2, mPaint);
+
+            mPaint.setShader(new RadialGradient((int)x, (int)y,
+                    mStrokeWidthArc, Color.BLACK, Color.TRANSPARENT, Shader.TileMode.CLAMP));
+            canvas.drawCircle((int)x, (int)y, mStrokeWidthArc, mPaint);
+
+//            double endX = Math.cos(Math.toRadians(degrees + (90 + offset))) * radius + mArcRect.centerX();
+//
+//            double endY = Math.sin(Math.toRadians(degrees + (90 + offset))) * radius + mArcRect.centerY();
+//
+//            canvas.drawBitmap(mBmp, (int)endX, (int)endY, mPaint);
+
+            //canvas.drawCircle((int)endX, (int)endY, 30, mPaint);
+
+        }
+    }
+
+    protected void setArcRect() {
+        int height = getHeight()/2;
+        int width = getWidth()/2;
+        int radius = height/2 - (int)(mStrokeWidthArc/2.f);//mStrokeWidthBg - mStrokeWidthBg/6;
+        mArcRect.set(width/2- radius + getPaddingLeft(),
+                height/2 - radius + getPaddingTop(),
+                width/2 + radius - getPaddingRight(),
+                height/2 + radius - getPaddingBottom());
+
+        mArcRect.offset(width/2, height/2);
+
+        rectSet = true;
     }
 
     public float getMaxSpeed()
     {
         return maxSpeed;
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+
+        Log.i("onDrawSegment", "onDraw");
+
+        super.onDraw(canvas);
+
+        onDrawSegment(canvas);
     }
 }
