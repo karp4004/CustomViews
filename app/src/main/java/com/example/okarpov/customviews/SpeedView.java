@@ -133,35 +133,22 @@ public class SpeedView extends FrameLayout {
                     item_head.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_selected));
                 }
             }
-
-//            RotateAnimation animation = new RotateAnimation(0, (float) Math.toRadians(i),
-//                    Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-//            animation.setInterpolator(new LinearInterpolator());
-//            animation.setDuration(300);
-//            animation.setFillAfter(true);
-//
-//            v.startAnimation(animation);
-
-            //v.setRotation(i);
         }
-
-//        Ratio1 = (float)(count-4)/(maxSpeed - minSpeed);
-//        Ratio2 = 2/minSpeed;
     }
 
     public void setValue(int v)
     {
-        if( v < 20)
+        if( v < Count3)
         {
             mSpeedToDeg = v*itemVal3;
         }
-        else if(v > 220)
+        else if(v > (maxSpeed - Count3))
         {
-            mSpeedToDeg = 20*itemVal3 + (200)*itemVal4 + (v-220)*itemVal3;
+            mSpeedToDeg = Count3*itemVal3 + (maxSpeed - Count3*2)*itemVal4 + (v-(maxSpeed - Count3))*itemVal3;
         }
         else
         {
-            mSpeedToDeg = 20*itemVal3 + (v-20)*itemVal4;
+            mSpeedToDeg = Count3*itemVal3 + (v-Count3)*itemVal4;
         }
 
         float speddtodeg = mSpeedToDeg - (90 - (360 - mDegrees)/2);
@@ -218,7 +205,7 @@ public class SpeedView extends FrameLayout {
                     View item_head = ch.findViewById(R.id.item_head);
                     if (item_head != null) {
                         int idx = indexOfChild(ch);
-                        if(idx == 0 || idx==getChildCount()-1 || (idx - 2)%5==0) {
+                        if(idx == 0 || idx==getChildCount()-1 || (idx - Count1)%Count2==0) {
                             item_head.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_selected2));
                         }
                         else
@@ -256,10 +243,6 @@ public class SpeedView extends FrameLayout {
         if (!rectSet) {
             setArcRect();
         }
-
-//            mPaint.setColor(colorBg);
-//            mPaint.setStrokeWidth(mStrokeWidthBg);
-//            canvas.drawArc(mArcRect, 0, 360, false, mPaint);
 
         float offset = 360 - mDegrees;
 
