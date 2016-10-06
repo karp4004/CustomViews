@@ -26,10 +26,13 @@ import android.widget.TextView;
  */
 public class SpeedView extends FrameLayout {
 
+    int Count1 = 2;
+    int Count2 = 5;
+    int Count3 = 20;
     float maxSpeed = 240.f;
     float itemVal2 = 5.f;
-    float itemVal3 = itemVal2*2/ 20.f;
-    float itemVal4 = itemVal2*5/ 20.f;
+    float itemVal3 = itemVal2*Count1/ Count3;
+    float itemVal4 = itemVal2*Count2/ Count3;
     float mDegrees = 270;
     int speedItem = 0;
     int mValue = 0;
@@ -69,6 +72,7 @@ public class SpeedView extends FrameLayout {
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         float weight = mDegrees/mCount;
+        int currentLabel = 0;
 
         for(float i=0;i<=mDegrees;i+=weight) {
             View v = inflater.inflate(getResources().getLayout(R.layout.speed_item), null);
@@ -101,7 +105,7 @@ public class SpeedView extends FrameLayout {
             View item_head = v.findViewById(R.id.item_head);
             if (item_head != null) {
 
-                if(idx == 0 || idx==mCount || (idx - 2)%itemVal2==0)
+                if(idx == 0 || idx==mCount || (idx - Count1)%itemVal2==0)
                 {
                     FrameLayout.LayoutParams par = new
                             FrameLayout.LayoutParams((int)getResources().getDimension(R.dimen.speed7),
@@ -113,9 +117,14 @@ public class SpeedView extends FrameLayout {
                     item_head.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_selected2));
 
                     TextView txtVal = (TextView)v.findViewById(R.id.txtVal);
-                    if(txtVal != null && idx != 0 && idx!=mCount)
+                    if(txtVal != null && idx!=mCount)
                     {
-                        txtVal.setText("" + (idx+3)*4);
+                        if(idx != 0)
+                        {
+                            currentLabel += 20;
+                        }
+
+                        txtVal.setText("" + currentLabel);
                         txtVal.setRotation(-item.getRotation());
                     }
                 }
