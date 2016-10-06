@@ -8,13 +8,18 @@ import android.graphics.Paint;
 import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.os.CountDownTimer;
+import android.text.format.Time;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -22,6 +27,7 @@ import android.widget.TextView;
  */
 public class SpeedView extends FrameLayout {
 
+    int mSpeed = 0;
     int Count1 = 2;
     int Count2 = 5;
     int Count3 = 20;
@@ -31,9 +37,12 @@ public class SpeedView extends FrameLayout {
     float itemVal4 = itemVal2*Count2/ Count3;
     float mDegrees = 270;
     int speedItem = 0;
-    int mValue = 0;
+    int speedItemCurrent = 0;
     float mSpeedToDeg = 0.f;
+    float mSpeedToDegDiff = 0.f;
+    float mSpeedToDegCurr = 0.f;
     int mCount = 54;
+    boolean mAnimend = true;
 
     public SpeedView(Context context)
     {
@@ -75,7 +84,7 @@ public class SpeedView extends FrameLayout {
             addView(v);
 
             FrameLayout.LayoutParams p = new FrameLayout.LayoutParams(
-                    (int)getResources().getDimension(R.dimen.speed3),
+                    (int) getResources().getDimension(R.dimen.speed3),
                     ViewGroup.LayoutParams.WRAP_CONTENT);
 
             p.gravity = Gravity.CENTER;
@@ -83,9 +92,8 @@ public class SpeedView extends FrameLayout {
             v.setLayoutParams(p);
 
             View item = v.findViewById(R.id.item);
-            if(item != null)
-            {
-                item.setRotation(i - (90 - (360 - mDegrees)/2));
+            if (item != null) {
+                item.setRotation(i - (90 - (360 - mDegrees) / 2));
 
 //                            RotateAnimation animation = new RotateAnimation(0, i-90,//(float) Math.toRadians(i),
 //                    Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -101,31 +109,26 @@ public class SpeedView extends FrameLayout {
             View item_head = v.findViewById(R.id.item_head);
             if (item_head != null) {
 
-                if(idx == 0 || idx==mCount || (idx - Count1)%itemVal2==0)
-                {
+                if (idx == 0 || idx == mCount || (idx - Count1) % itemVal2 == 0) {
                     FrameLayout.LayoutParams par = new
-                            FrameLayout.LayoutParams((int)getResources().getDimension(R.dimen.speed7),
-                            (int)getResources().getDimension(R.dimen.speed5));
+                            FrameLayout.LayoutParams((int) getResources().getDimension(R.dimen.speed7),
+                            (int) getResources().getDimension(R.dimen.speed5));
                     par.gravity = Gravity.CENTER_VERTICAL;
 
                     item_head.setLayoutParams(par);
 
                     item_head.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_selected2));
 
-                    TextView txtVal = (TextView)v.findViewById(R.id.txtVal);
-                    if(txtVal != null && idx!=mCount)
-                    {
-                        if(idx != 0)
-                        {
+                    TextView txtVal = (TextView) v.findViewById(R.id.txtVal);
+                    if (txtVal != null && idx != mCount) {
+                        if (idx != 0) {
                             currentLabel += 20;
                         }
 
                         txtVal.setText("" + currentLabel);
                         txtVal.setRotation(-item.getRotation());
                     }
-                }
-                else
-                {
+                } else {
                     item_head.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_selected));
                 }
             }
@@ -147,16 +150,27 @@ public class SpeedView extends FrameLayout {
             mSpeedToDeg = Count3*itemVal3 + (v-Count3)*itemVal4;
         }
 
-        float speddtodeg = mSpeedToDeg - (90 - (360 - mDegrees)/2);
+        mSpeedToDegDiff = mSpeedToDeg - mSpeedToDegCurr;
 
-        View item = getChildAt(speedItem);
+        mSpeed = v;
+
+        invalidate();
+
+        Log.i("setValue", "v:" + v + " speedItem:" + speedItem);// + "r:" + r);
+    }
+
+    void updateSelection(float degree)
+    {
+        float speddtodeg = degree - (90 - (360 - mDegrees)/2);
+
+        View item = getChildAt((int)speedItem);
         if(item != null)
         {
             if(item.getRotation() > speddtodeg)
             {
                 for(int i=speedItem;i>=0;i--)
                 {
-                    View ch = getChildAt(i);
+                    View ch = getChildAt((int)i);
                     if(ch != null) {
                         if(ch.getRotation() <= speddtodeg)
                         {
@@ -170,7 +184,7 @@ public class SpeedView extends FrameLayout {
             {
                 for(int i=speedItem;i<getChildCount();i++)
                 {
-                    View ch = getChildAt(i);
+                    View ch = getChildAt((int)i);
                     if(ch != null) {
                         if(ch.getRotation() >= speddtodeg)
                         {
@@ -183,18 +197,16 @@ public class SpeedView extends FrameLayout {
 
             if(speedItem < getChildCount() - 1)
             {
-                if(v > 0)
+                if(mSpeed > 0)
                 {
                     speedItem++;
                 }
             }
         }
 
-        Log.i("setValue", "v:" + v + " speedItem:" + speedItem);// + "r:" + r);
-
-        if(mValue > speedItem)
+        if(speedItemCurrent > speedItem)
         {
-            for(int i=mValue;i>=speedItem;i--)
+            for(int i=speedItemCurrent;i>=speedItem;i--)
             {
                 View ch = getChildAt(i);
                 if(ch != null) {
@@ -213,7 +225,7 @@ public class SpeedView extends FrameLayout {
             }
         }
         else {
-            for (int i = mValue; i < speedItem; i++) {
+            for (int i = speedItemCurrent; i < speedItem; i++) {
                 View ch = getChildAt(i);
                 if(ch != null) {
                     View item_head = ch.findViewById(R.id.item_head);
@@ -224,9 +236,7 @@ public class SpeedView extends FrameLayout {
             }
         }
 
-        mValue = speedItem;
-
-        invalidate();
+        speedItemCurrent = speedItem;
     }
 
     protected final Paint mPaint = new Paint();
@@ -236,6 +246,33 @@ public class SpeedView extends FrameLayout {
 
     protected void onDrawSegment(Canvas canvas)
     {
+        if(mSpeedToDegCurr > mSpeedToDeg)
+        {
+            mSpeedToDegCurr += mSpeedToDegDiff * 0.05f * 0.5f;
+
+            if(mSpeedToDegCurr <= mSpeedToDeg)
+            {
+                mSpeedToDegCurr = mSpeedToDeg;
+            }
+
+            updateSelection(mSpeedToDegCurr);
+
+            invalidate();
+        }
+        else if(mSpeedToDegCurr < mSpeedToDeg)
+        {
+            mSpeedToDegCurr += mSpeedToDegDiff * 0.05f * 0.5f;
+
+            if(mSpeedToDegCurr >= mSpeedToDeg)
+            {
+                mSpeedToDegCurr = mSpeedToDeg;
+            }
+
+            updateSelection(mSpeedToDegCurr);
+
+            invalidate();
+        }
+
         if (!rectSet) {
             setArcRect();
         }
@@ -249,7 +286,7 @@ public class SpeedView extends FrameLayout {
         mPaint.setStyle(Paint.Style.STROKE);
         canvas.drawArc(mArcRect, 90 + offset/2, mDegrees, false, mPaint);
 
-        float degrees = mSpeedToDeg;
+        float degrees = mSpeedToDegCurr;
         double x = mArcRect.centerX() + Math.cos(Math.toRadians(degrees + (90 + offset/2)))*mArcRect.width()/2.f;
         double y = mArcRect.centerY() + Math.sin(Math.toRadians(degrees + (90 + offset/2)))*mArcRect.height()/2.f;
         double vx = x - mArcRect.centerX();
