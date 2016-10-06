@@ -9,15 +9,11 @@ import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -249,7 +245,7 @@ public class SpeedView extends FrameLayout {
         mPaint.setShader(null);
         mPaint.setStrokeWidth((int)(mStrokeWidthArc/2));
 
-        mPaint.setColor(Color.BLACK);
+        mPaint.setColor(getResources().getColor(R.color.speed1));
         mPaint.setStyle(Paint.Style.STROKE);
         canvas.drawArc(mArcRect, 90 + offset/2, mDegrees, false, mPaint);
 
@@ -259,20 +255,20 @@ public class SpeedView extends FrameLayout {
         double vx = x - mArcRect.centerX();
         double vy = y - mArcRect.centerX();
 
-        int div = 3;
+        int div = 4;
         mPaint.setShader(new LinearGradient((int)x, (int)y, (int)x + (int)vx/div, (int)y + (int)vy/div,
-                Color.RED, Color.TRANSPARENT, Shader.TileMode.MIRROR));
-        mPaint.setColor(Color.RED);
+                getResources().getColor(R.color.speed2), Color.TRANSPARENT, Shader.TileMode.MIRROR));
         mPaint.setStyle(Paint.Style.STROKE);
-        float d = degrees - 25;
+        float offset2 = div*10;
+        float d = degrees - offset2;
         if(d > 0) {
-            float maxover = degrees + 25 - mDegrees;
+            float maxover = degrees + offset2 - mDegrees;
             maxover = maxover>0?maxover:0;
-            canvas.drawArc(mArcRect, degrees - 25 + (90 + offset/2), 50 - maxover, false, mPaint);
+            canvas.drawArc(mArcRect, degrees - offset2 + (90 + offset/2) + maxover, offset2*2 - maxover*2, false, mPaint);
         }
         else
         {
-            canvas.drawArc(mArcRect, (90 + offset/2), 50 + d, false, mPaint);
+            canvas.drawArc(mArcRect, (90 + offset/2), offset2*2 + d*2, false, mPaint);
         }
 
         mPaint.setShader(null);
@@ -282,11 +278,11 @@ public class SpeedView extends FrameLayout {
         mPaint.setStyle(Paint.Style.FILL);
 
         mPaint.setShader(new RadialGradient((int)x, (int)y + 6,
-                mStrokeWidthArc * 1.3f, Color.argb(255,150,150,150), Color.TRANSPARENT, Shader.TileMode.CLAMP));
+                mStrokeWidthArc * 1.3f, getResources().getColor(R.color.speed3), Color.TRANSPARENT, Shader.TileMode.CLAMP));
         canvas.drawCircle((int)x, (int)y + 6, mStrokeWidthArc * 1.3f, mPaint);
 
         mPaint.setShader(new RadialGradient((int)x, (int)y-10,
-                mStrokeWidthArc*8, Color.argb(255,230,0,0), Color.BLACK, Shader.TileMode.CLAMP));
+                mStrokeWidthArc*8, getResources().getColor(R.color.speed4), Color.BLACK, Shader.TileMode.CLAMP));
         canvas.drawCircle((int)x, (int)y, mStrokeWidthArc, mPaint);
     }
 

@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="speed1">#aaaaaa</color>
+    <color name="speed2">#ff3333</color>
+    <color name="speed3">#969696</color>
+    <color name="speed4">#fa0000</color>
 </resources>
