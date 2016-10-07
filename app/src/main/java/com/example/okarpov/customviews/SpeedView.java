@@ -43,6 +43,17 @@ public class SpeedView extends FrameLayout {
     float mSpeedToDeg = 0.f;
     int mCount = 54;
     boolean mAnimend = true;
+    Iterface mIterface;
+
+    public interface Iterface
+    {
+        void onSpeedChanged(int speed);
+    }
+
+    public void setInterface(Iterface i)
+    {
+        mIterface = i;
+    }
 
     public SpeedView(Context context)
     {
@@ -83,7 +94,7 @@ public class SpeedView extends FrameLayout {
             View v = inflater.inflate(getResources().getLayout(R.layout.speed_item), null);
             addView(v);
 
-            FrameLayout.LayoutParams p = new FrameLayout.LayoutParams(
+        FrameLayout.LayoutParams p = new FrameLayout.LayoutParams(
                     (int) getResources().getDimension(R.dimen.speed3),
                     ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -156,9 +167,13 @@ public class SpeedView extends FrameLayout {
         Log.i("setValue", "v:" + v + " speedItem:" + speedItem);// + "r:" + r);
     }
 
-    void updateSelection()
-    {
-        int rounded = Math.round(mSpeedCurrent);
+    void updateSelection() {
+        int rounded = (int) mSpeedCurrent;
+
+        if(mIterface != null)
+        {
+            mIterface.onSpeedChanged(rounded);
+        }
 
         if( mSpeedCurrent < Count3)
         {
@@ -185,8 +200,8 @@ public class SpeedView extends FrameLayout {
         {
             mSpeedToDeg = Count3*itemVal3 + (mSpeedCurrent-Count3)*itemVal4;
 
-            speedItem = (int)rounded/4;
-            speedItem -= Count1;
+            speedItem = Count1 + (rounded - Count3)/4;
+            speedItem++;
         }
 
         Log.i("updateSelection", "speedItem:" + speedItem + " rounded:" + rounded + " mSpeedDif:" + mSpeedDif);// + "r:" + r);

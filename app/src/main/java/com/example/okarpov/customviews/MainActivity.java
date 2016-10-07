@@ -13,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.Date;
 import java.util.concurrent.Delayed;
@@ -104,6 +107,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        final TextView tv = (TextView)findViewById(R.id.textView2);
+        sv.setInterface(new SpeedView.Iterface(){
+            @Override
+            public void onSpeedChanged(int speed) {
+                tv.setText("" + speed);
+            }
+        });
     }
 
     @Override
