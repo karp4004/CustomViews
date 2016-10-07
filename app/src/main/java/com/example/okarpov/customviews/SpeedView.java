@@ -27,7 +27,9 @@ import android.widget.TextView;
  */
 public class SpeedView extends FrameLayout {
 
-    int mSpeed = 0;
+    float mSpeed = 0;
+    float mSpeedCurrent = 0;
+    float mSpeedDif = 0;
     int Count1 = 2;
     int Count2 = 5;
     int Count3 = 20;
@@ -39,8 +41,6 @@ public class SpeedView extends FrameLayout {
     int speedItem = 0;
     int speedItemCurrent = 0;
     float mSpeedToDeg = 0.f;
-    float mSpeedToDegDiff = 0.f;
-    float mSpeedToDegCurr = 0.f;
     int mCount = 54;
     boolean mAnimend = true;
 
@@ -137,72 +137,59 @@ public class SpeedView extends FrameLayout {
 
     public void setValue(int v)
     {
-        if( v < Count3)
+        if(v < 0)
         {
-            mSpeedToDeg = v*itemVal3;
-        }
-        else if(v > (maxSpeed - Count3))
-        {
-            mSpeedToDeg = Count3*itemVal3 + (maxSpeed - Count3*2)*itemVal4 + (v-(maxSpeed - Count3))*itemVal3;
-        }
-        else
-        {
-            mSpeedToDeg = Count3*itemVal3 + (v-Count3)*itemVal4;
+            v = 0;
         }
 
-        mSpeedToDegDiff = mSpeedToDeg - mSpeedToDegCurr;
+        if(v > maxSpeed)
+        {
+            v = (int)maxSpeed;
+        }
 
         mSpeed = v;
+
+        mSpeedDif = mSpeed - mSpeedCurrent;
 
         invalidate();
 
         Log.i("setValue", "v:" + v + " speedItem:" + speedItem);// + "r:" + r);
     }
 
-    void updateSelection(float degree)
+    void updateSelection()
     {
-        float speddtodeg = degree - (90 - (360 - mDegrees)/2);
+        int rounded = Math.round(mSpeedCurrent);
 
-        View item = getChildAt((int)speedItem);
-        if(item != null)
+        if( mSpeedCurrent < Count3)
         {
-            if(item.getRotation() > speddtodeg)
-            {
-                for(int i=speedItem;i>=0;i--)
-                {
-                    View ch = getChildAt((int)i);
-                    if(ch != null) {
-                        if(ch.getRotation() <= speddtodeg)
-                        {
-                            speedItem = i;
-                            break;
-                        }
-                    }
-                }
-            }
-            else if(item.getRotation() < speddtodeg)
-            {
-                for(int i=speedItem;i<getChildCount();i++)
-                {
-                    View ch = getChildAt((int)i);
-                    if(ch != null) {
-                        if(ch.getRotation() >= speddtodeg)
-                        {
-                            speedItem = i;
-                            break;
-                        }
-                    }
-                }
-            }
+            mSpeedToDeg = mSpeedCurrent*itemVal3;
 
-            if(speedItem < getChildCount() - 1)
-            {
-                if(mSpeed > 0)
-                {
-                    speedItem++;
-                }
+            speedItem = (int)rounded/10;
+
+            if(mSpeedCurrent > 0) {
+                speedItem++;
             }
         }
+        else if(mSpeedCurrent > (maxSpeed - Count3))
+        {
+            mSpeedToDeg = Count3*itemVal3 + (maxSpeed - Count3*Count1)*itemVal4 + (mSpeedCurrent-(maxSpeed - Count3))*itemVal3;
+
+            int fff = (int)(rounded - (maxSpeed - Count3));
+
+            Log.i("updateSelection", "fff:" + fff);
+
+            speedItem = mCount - Count1 + (int)(rounded - (maxSpeed - Count3))/10;
+            speedItem++;
+        }
+        else
+        {
+            mSpeedToDeg = Count3*itemVal3 + (mSpeedCurrent-Count3)*itemVal4;
+
+            speedItem = (int)rounded/4;
+            speedItem -= Count1;
+        }
+
+        Log.i("updateSelection", "speedItem:" + speedItem + " rounded:" + rounded + " mSpeedDif:" + mSpeedDif);// + "r:" + r);
 
         if(speedItemCurrent > speedItem)
         {
@@ -243,34 +230,46 @@ public class SpeedView extends FrameLayout {
     protected final RectF mArcRect = new RectF();
     protected boolean rectSet = false;
     protected float mStrokeWidthArc;
+    long old = System.currentTimeMillis();
 
     protected void onDrawSegment(Canvas canvas)
     {
-        if(mSpeedToDegCurr > mSpeedToDeg)
+        long cur = System.currentTimeMillis();
+        long delta = cur - old;
+        old = cur;
+        float dt = (float)delta/1000;
+        if(dt > 0.1f)
         {
-            mSpeedToDegCurr += mSpeedToDegDiff * 0.05f * 0.5f;
-
-            if(mSpeedToDegCurr <= mSpeedToDeg)
-            {
-                mSpeedToDegCurr = mSpeedToDeg;
-            }
-
-            updateSelection(mSpeedToDegCurr);
-
-            invalidate();
+            dt = 0.1f;
         }
-        else if(mSpeedToDegCurr < mSpeedToDeg)
-        {
-            mSpeedToDegCurr += mSpeedToDegDiff * 0.05f * 0.5f;
 
-            if(mSpeedToDegCurr >= mSpeedToDeg)
+        if(mSpeedCurrent != mSpeed) {
+
             {
-                mSpeedToDegCurr = mSpeedToDeg;
+                if (mSpeedCurrent > mSpeed) {
+                    mSpeedCurrent += mSpeedDif * dt * 1.f;
+
+                    if(mSpeedCurrent <= mSpeed)
+                    {
+                        mSpeedCurrent = mSpeed;
+                    }
+
+                    updateSelection();
+
+                    invalidate();
+                } else if (mSpeedCurrent < mSpeed) {
+                    mSpeedCurrent += mSpeedDif * dt * 1.f;
+
+                    if(mSpeedCurrent >= mSpeed)
+                    {
+                        mSpeedCurrent = mSpeed;
+                    }
+
+                    updateSelection();
+
+                    invalidate();
+                }
             }
-
-            updateSelection(mSpeedToDegCurr);
-
-            invalidate();
         }
 
         if (!rectSet) {
@@ -286,7 +285,7 @@ public class SpeedView extends FrameLayout {
         mPaint.setStyle(Paint.Style.STROKE);
         canvas.drawArc(mArcRect, 90 + offset/2, mDegrees, false, mPaint);
 
-        float degrees = mSpeedToDegCurr;
+        float degrees = mSpeedToDeg;
         double x = mArcRect.centerX() + Math.cos(Math.toRadians(degrees + (90 + offset/2)))*mArcRect.width()/2.f;
         double y = mArcRect.centerY() + Math.sin(Math.toRadians(degrees + (90 + offset/2)))*mArcRect.height()/2.f;
         double vx = x - mArcRect.centerX();
