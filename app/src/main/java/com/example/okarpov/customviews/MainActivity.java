@@ -130,8 +130,19 @@ public class MainActivity extends AppCompatActivity {
     {
         setContentView(R.layout.activity_main);
 
-        mScanner = new BluetoothLeScanner(this);
-        mScanner.scanLeDevice(-1, true);
+        mScanner = new BluetoothLeScanner(this, new BluetoothLeScanner.Interface(){
+            @Override
+            public void onNewDevice(BluetoothDevice device) {
+                if(device != null && device.getName() != null && device.getName().equals("eZWay-Android"))
+                {
+                    mScanner.stopScan();
+
+                    Log.i("onNewDevice", "" + device.getName());
+                }
+            }
+        });
+
+        mScanner.startScan();
     }
 
     @Override
@@ -146,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i("devices", "requestCode:" + requestCode + " resultCode:" + resultCode + " data:" + data);
 
-        mScanner.scanLeDevice(-1, true);
+        mScanner.scanLeDevice();
     }
 
     public void btn1(View view)
