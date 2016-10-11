@@ -1,6 +1,11 @@
 package com.example.okarpov.customviews;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +25,11 @@ import org.w3c.dom.Text;
 import java.util.Date;
 import java.util.concurrent.Delayed;
 
+import bluetoothscanner.BluetoothLeScanner;
+
 public class MainActivity extends AppCompatActivity {
+
+    BluetoothLeScanner mScanner;
 
     void testList()
     {
@@ -117,9 +126,46 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    void testBlueTooth()
+    {
+        setContentView(R.layout.activity_main);
+
+        mScanner = new BluetoothLeScanner(this);
+        mScanner.scanLeDevice(-1, true);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.select_test);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.i("devices", "requestCode:" + requestCode + " resultCode:" + resultCode + " data:" + data);
+
+        mScanner.scanLeDevice(-1, true);
+    }
+
+    public void btn1(View view)
+    {
         testSpeed();
+    }
+
+    public void btn2(View view)
+    {
+        testBlueTooth();
+    }
+
+    public void btn3(View view)
+    {
+        testGroup();
+    }
+
+    public void btn4(View view)
+    {
+        testList();
     }
 }

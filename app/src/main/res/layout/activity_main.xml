@@ -5,98 +5,71 @@
     android:layout_height="match_parent"
     tools:context="com.example.okarpov.customviews.MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/journeyFrame"
-        android:background="#e1e1e1">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.example.okarpov.customviews.CustomScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/scrollView">
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/journeyList"></LinearLayout>
-
-            </com.example.okarpov.customviews.CustomScrollView>
-
-        </FrameLayout>
-
-    </LinearLayout>
-
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <FrameLayout
-            android:layout_width="300dp"
-            android:layout_height="10dp"
-            android:layout_gravity="center"
-            android:rotation="60"
-            android:visibility="gone">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#647eff"
-                android:layout_marginRight="280dp" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="300dp"
-            android:layout_height="10dp"
-            android:layout_gravity="center"
-            android:rotation="30"
-            android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/journeyFrame"
+            android:background="#e1e1e1">
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#647eff"
-                android:layout_marginRight="280dp" />
-        </FrameLayout>
+                android:layout_height="match_parent">
 
-        <include
-            android:layout_width="300dp"
-            android:layout_height="10dp"
-            layout="@layout/speed_item"
+                <com.example.okarpov.customviews.CustomScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/scrollView">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/journeyList"></LinearLayout>
+
+                </com.example.okarpov.customviews.CustomScrollView>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <SeekBar
+            android:layout_width="@dimen/speed3"
+            android:layout_height="wrap_content"
+            android:id="@+id/seekBar"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:max="100"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/speed10" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:layout_centerInParent="true"
+            android:textSize="@dimen/size2"
+            android:text="0"
             android:layout_gravity="center" />
 
+        <com.example.okarpov.customviews.SpeedView
+            android:layout_width="@dimen/speed3"
+            android:layout_height="@dimen/speed3"
+            android:id="@+id/speedView"
+            android:layout_centerInParent="true">
+
+        </com.example.okarpov.customviews.SpeedView>
     </FrameLayout>
+    <![CDATA[
 
-    <SeekBar
-        android:layout_width="@dimen/speed3"
-        android:layout_height="wrap_content"
-        android:id="@+id/seekBar"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/size2"
-        android:max="100" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:layout_centerInParent="true"
-        android:textSize="@dimen/size2"
-        android:text="0" />
 
-    <com.example.okarpov.customviews.SpeedView
-        android:layout_width="@dimen/speed3"
-        android:layout_height="@dimen/speed3"
-        android:id="@+id/speedView"
-        android:layout_centerInParent="true">
+    >
 
-    </com.example.okarpov.customviews.SpeedView>>
 
+]]>
 </RelativeLayout>
